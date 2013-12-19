@@ -1,0 +1,16 @@
+{
+  "author": "Test",
+  "name": "Manet",
+  "description": "Sample",
+  "version": "0.0.1",
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+    "restify": "*",
+    "jsdom": "*",
+    "jquery": "*"
+  }
+}
