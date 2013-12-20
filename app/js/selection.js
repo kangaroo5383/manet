@@ -1,4 +1,4 @@
-angular.module("util", []).
+angular.module("util").
 factory("selection", function() {
 
 	return {
