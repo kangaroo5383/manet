@@ -1,0 +1,13 @@
+{
+  "name": "manet",
+  "version": "0.1.0",
+  "main": "",
+  "dependencies": {
+    "angular": "*"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ]
+}
