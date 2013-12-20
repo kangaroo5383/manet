@@ -1,6 +1,6 @@
 angular.module("util", []).
 factory("selection", function() {
-	
+
 	return {
 		generateSelectorArrayForNode: function(node, selectorArray) {
 			selectorArray = selectorArray || [];
@@ -21,20 +21,39 @@ factory("selection", function() {
 		},
 		findMatchingSelectorForNodes: function(nodes) {
 			var selectorArray;
+			var classNamesMatch = nodes[0].getAttribute("class");
+			var tagNamesMatch = nodes[0].tagName;
+			var specificityReduced;
 			nodes.forEach(function(node) {
 				var selector = this.generateSelectorArrayForNode(node);
+				if (classNamesMatch && classNamesMatch !== classNamesMatch.getAttribute("class")) {
+					classNamesMatch = false;
+				}
+				if (tagNamesMatch && tagNamesMatch !== node.tagName) {
+					tagNamesMatch = false;
+				}
 				if (!selectorArray) {
 					selectorArray = selector;
 				} else {
 					for (var i = 0; i < selectorArray.length; i += 1) {
 						if (selectorArray[i] !== selector[i]) {
 							selectorArray.splice(i, selectorArray.length);
+							specificityReduced = true;
 							break;
 						}
 					}
 				}
-			});
+			}, this);
+			if (specificityReduced) {
+				selectorArray.pop();
+				selectorArray.push(
+					(tagNamesMatch || "") +
+					((classNamesMatch && this.generateClassSelectorFromNode(classNamesMatch)) || "")
+
+				);
+			}
 			return selectorArray;
+
 		},
 		generateClassSelectorFromNode: function(node) {
 			var classes = node.getAttribute("class");
