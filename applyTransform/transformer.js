@@ -34,11 +34,18 @@ var processContentAtURLWithTransformerFileURL = function (aURL, transformerDicti
       content = "";
       
       var dictionary = {};
-      dictionary["documentURL"] = aURL;
+      var valid = false;
       var transformerKeys = Object.keys(transformerDictionary);
       for (var i in transformerKeys) {
         var aKey = transformerKeys[i];
-        dictionary[aKey] = valueForSelectorString(transformerDictionary[aKey]);
+        var selectedValue = valueForSelectorString(transformerDictionary[aKey]);
+        if (selectedValue.length > 0) {
+          valid = true;
+          dictionary[aKey] = selectedValue;
+        }
+      }
+      if (Object.keys(dictionary).length === 0) {
+        dictionary = null;
       }
 
       callback(null, dictionary);
