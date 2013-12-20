@@ -20618,7 +20618,7 @@ factory("hoverbox", function() {
 });
 ;angular.module("util", []).
 factory("selection", function() {
-
+	
 	return {
 		generateSelectorArrayForNode: function(node, selectorArray) {
 			selectorArray = selectorArray || [];
@@ -20777,4 +20777,9 @@ run(function(Hoverbox) {
   uiContainer = createContainer();
   attachListeners();
 });
+;angular.module("app", ["util"]).
+run(function (selection) {
+	console.log(selection)
+});
+angular.bootstrap(document.documentElement, ["app"]);
 ;

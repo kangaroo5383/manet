@@ -1,6 +1,6 @@
 angular.module("util", []).
 factory("selection", function() {
-
+	
 	return {
 		generateSelectorArrayForNode: function(node, selectorArray) {
 			selectorArray = selectorArray || [];
