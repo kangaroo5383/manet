@@ -1,4 +1,4 @@
-angular.module("app").
+angular.module("app", []).
 factory("hoverbox", function() {
 
   var hoverboxHtml = '<div class="remove"></div><div class="options"><input type="text" placeholder="Name"><div class="duplicate"></div></div>';
