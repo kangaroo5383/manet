@@ -17,12 +17,10 @@ var valueForSelectorString = function (selectorString) {
   return output;
 };
 
-var processContentAtURLWithTransformerFileURL = function (aURL, transformerFile, callback) {
+var processContentAtURLWithTransformerFileURL = function (aURL, transformerDictionary, callback) {
   var content = "";
   var err = null;
-  var transformerFileContent = fs.readFileSync(transformerFile);
-  var transformerDictionary = JSON.parse(transformerFileContent);
-
+  
   http.get(aURL, function(response) {
     if (response.statusCode != 200) {
       callback({message:"file not accessible via http"}, null);
@@ -56,12 +54,21 @@ function transformer() {}
 
 transformer.transformURLWithTransformerFile = function (aURL, transformerFile, callback) {
   if (aURL && aURL !== "" && transformerFile && transformerFile !== "") {
-    processContentAtURLWithTransformerFileURL(aURL, transformerFile, callback);
+    var transformerFileContent = fs.readFileSync(transformerFile);
+    var transformerDictionary = JSON.parse(transformerFileContent);
+    processContentAtURLWithTransformerFileURL(aURL, transformerDictionary, callback);
   } else {
     console.log("missing parameter in transformURLWithTransformerFile");
   }
-}
+};
 
+transformer.transformURLWithTransformerDictionary = function (aURL, transformerDictionary, callback) {
+  if (aURL && aURL !== "" && transformerDictionary && transformerDictionary !== "") {
+    processContentAtURLWithTransformerFileURL(aURL, transformerDictionary, callback);
+  } else {
+    console.log("missing parameter in transformURLWithTransformerFile");
+  }
+};
 module.exports = transformer;
 
 

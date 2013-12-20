@@ -9,3 +9,14 @@ transformer.transformURLWithTransformerFile(aURL, transformerFile, function(err,
 		console.log(JSON.stringify(resultDictionary));	
 	}
 });
+
+transformer.transformURLWithTransformerDictionary(aURL, {
+	characters : ".characters",
+	rating : "#all-critics-meter"
+}, function(err, resultDictionary) {
+	if (err) {
+		console.log(err.message);
+	} else {
+		console.log(JSON.stringify(resultDictionary));	
+	}
+});
