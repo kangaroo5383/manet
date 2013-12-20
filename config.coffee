@@ -17,6 +17,7 @@ exports.config =
           # All vendor components should be built first in the order they are used.
           'bower_components/angular/angular.js'
           'vendor/angular-sanitize.js'
+          'app/js/modules.js'
           # All vendor components should be built first in the order they are used.
         ]
         after: [

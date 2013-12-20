@@ -1,4 +1,4 @@
-angular.module("ui", []).
+angular.module("ui").
 factory("Hoverbox", function() {
 
   var Hoverbox = function(node){

@@ -2,3 +2,14 @@
 	"characters" : ".characters",
 	"rating" : "#all-critics-meter"
 }
+
+// {
+// 	"characters" : {"selector": ".characters"},
+// 	"rating" : {"selector" : "#all-critics-meter"},
+// 	"comments": {
+// 		"selector": "#something",
+// 		"children": {
+// 			"selector" :"stuff"
+// 		}
+// 	}
+// }

@@ -1,107 +1,131 @@
-angular.module("app", ["util", "ui"]).
-run(function(selection, Hoverbox) {
-	var model = {
-		selections: []
-	};
+angular.module("app").
+directive("hoverboxManager", function(selection, Hoverbox, host) {
+	return {
 
-	var uiContainer, currentHoverbox;
+		controller: function($scope, $element) {
 
+			var model = {
+				selections: []
+			};
 
-	var matches = function(el, selector) {
-		if (!el || el.nodeType !== Node.ELEMENT_NODE) {
-			return false;
-		}
-
-		var matchesSelector = el.webkitMatchesSelector || el.mozMatchesSelector ||
-			el.oMatchesSelector || el.matchesSelector;
-
-		return matchesSelector.call(el, selector);
-	};
+			var uiContainer, currentHoverbox;
 
 
-	var targetIsValid = function(target) {
-		if (target.tagName === "BODY") {
-			return false;
-		}
+			var matches = function(el, selector) {
+				if (!el || el.nodeType !== Node.ELEMENT_NODE) {
+					return false;
+				}
 
-		if (matches(target, ".manet-container *")) {
-			return false;
-		}
+				var matchesSelector = el.webkitMatchesSelector || el.mozMatchesSelector ||
+					el.oMatchesSelector || el.matchesSelector;
 
-		var currentContainer = uiContainer.querySelector(".current");
-		var hoverboxes = currentContainer.querySelectorAll(".hoverbox");
-
-		for (var i = hoverboxes.length - 1; i >= 0; i--) {
-			var hoverboxEl = hoverboxes[i];
-			if (hoverboxEl.node == target) {
-				return false;
-			}
-		}
-
-		return true;
-	};
+				return matchesSelector.call(el, selector);
+			};
 
 
-	var drawHoverbox = function(e) {
-		var target = e.target;
-		if (targetIsValid(target)) {
-			currentHoverbox.hoverbox.style.display = "";
-			currentHoverbox.setNode(target);
-		}
-	};
+			var targetIsValid = function(target) {
+				if (target.tagName === "BODY") {
+					return false;
+				}
+
+				if (matches(target, ".manet-container *")) {
+					return false;
+				}
+
+				var currentContainer = uiContainer.querySelector(".current");
+				var hoverboxes = currentContainer.querySelectorAll(".hoverbox");
+
+				for (var i = hoverboxes.length - 1; i >= 0; i--) {
+					var hoverboxEl = hoverboxes[i];
+					if (hoverboxEl.node == target) {
+						return false;
+					}
+				}
+
+				return true;
+			};
 
 
-	var removeHoverbox = function(e) {
-		currentHoverbox.hoverbox.style.display = "none";
-	};
+			var drawHoverbox = function(e) {
+				var target = e.target;
+				if (targetIsValid(target)) {
+					currentHoverbox.hoverbox.style.display = "";
+					currentHoverbox.setNode(target);
+				}
+			};
 
 
-	var addHoverboxesForNodeMatches = function(node) {
-		var matches;
-		model.selections.push(node);
-		// Just a test to see if this works
-		if (model.selections.length > 1) {
-			matches = document.querySelectorAll(
-				selection.selectorArrayToString(selection.findMatchingSelectorForNodes(model.selections))
-			);
-			Array.prototype.forEach.call(matches, function(match) {
-				var hoverbox = new Hoverbox(match);
-				hoverbox.hoverbox.style.outline = "2px dotted grey";
-				hoverbox.hoverbox.style.background = "rgba(22,22,22,0.2)";
-				uiContainer.querySelector(".current").appendChild(hoverbox.hoverbox);
+			var removeHoverbox = function(e) {
+				currentHoverbox.hoverbox.style.display = "none";
+			};
+
+
+			var addHoverboxesForNodeMatches = function(node) {
+				var matches;
+				model.selections.push(node);
+				// Just a test to see if this works
+				if (model.selections.length > 1) {
+					matches = document.querySelectorAll(
+						selection.selectorArrayToString(selection.findMatchingSelectorForNodes(model.selections))
+					);
+					Array.prototype.forEach.call(matches, function(match) {
+						var hoverbox = new Hoverbox(match);
+						hoverbox.hoverbox.style.outline = "2px dotted grey";
+						hoverbox.hoverbox.style.background = "rgba(22,22,22,0.2)";
+						uiContainer.querySelector(".current").appendChild(hoverbox.hoverbox);
+					});
+				} else {
+					matches = document.querySelector(
+						selection.selectorArrayToString(selection.generateSelectorArrayForNode(node))
+					);
+				}
+			};
+
+
+			var addCurrentHoverbox = function(e) {
+				var target = e.target;
+				// console.log(target)
+				if (targetIsValid(target)) {
+					e.preventDefault();
+					addHoverboxesForNodeMatches(target);
+					var hoverbox = new Hoverbox(target);
+					uiContainer.querySelector(".current").appendChild(hoverbox.hoverbox);
+				}
+			};
+
+
+			var attachListeners = function() {
+				document.addEventListener("mouseover", drawHoverbox);
+				document.addEventListener("mouseout", removeHoverbox);
+				document.addEventListener("click", addCurrentHoverbox);
+			};
+
+
+
+			uiContainer = createContainer();
+			attachListeners();
+
+
+			$scope.$watch("activeField", function(newField) {
+				if (newField) {
+
+				}
 			});
-		} else {
-			matches = document.querySelector(
-				selection.selectorArrayToString(selection.generateSelectorArrayForNode(node))
-			);
+
+			var debugHB = $scope;
+
 		}
-	};
-
-
-	var addCurrentHoverbox = function(e) {
-		e.preventDefault();
-		var target = e.target;
-		if (targetIsValid(target)) {
-			addHoverboxesForNodeMatches(target);
-			var hoverbox = new Hoverbox(target);
-			uiContainer.querySelector(".current").appendChild(hoverbox.hoverbox);
-		}
-	};
-
-
-	var attachListeners = function() {
-		document.addEventListener("mouseover", drawHoverbox);
-		document.addEventListener("mouseout", removeHoverbox);
-		document.addEventListener("click", addCurrentHoverbox);
-	};
-
-
+	}
+}).run(function() {
 	var containerHtml = '<div class="potential"></div><div class="current"></div>';
 
 	var createContainer = function() {
 		var container = document.createElement("div");
+		var sidebar = document.createElement("div");
 		container.classList.add("manet-container");
 		container.innerHTML = containerHtml;
+		sidebar.setAttribute("sidebar", "");
+		container.appendChild(sidebar);
 		document.body.appendChild(container);
 
 		currentHoverbox = new Hoverbox(document.body);
@@ -109,9 +133,5 @@ run(function(selection, Hoverbox) {
 
 		return container;
 	};
-
-
-	uiContainer = createContainer();
-	attachListeners();
-});
+})
 angular.bootstrap(document.body, ["app"]);
