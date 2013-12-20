@@ -1,11 +1,11 @@
 angular.module("ui", []).
 factory("Hoverbox", function() {
 
-  var hoverboxHtml = '<div class="remove"></div><div class="options"><input type="text" placeholder="Name"><div class="duplicate"></div></div>';
+  var hoverboxHtml = '<div class="remove"></div>';
 
   var Hoverbox = function(node){
-    this.node = node;
     this.setupEl_();
+    this.setNode(node);
     this.setupEvents_();
   };
 
@@ -35,6 +35,8 @@ factory("Hoverbox", function() {
   Hoverbox.prototype.setupEvents_ = function(){
     var remove = this.hoverbox.querySelector(".remove");
     remove.addEventListener("click", this.remove_.bind(this));
+
+    document.addEventListener("scroll", this.sizeNode_.bind(this));
   };
 
 
@@ -43,7 +45,7 @@ factory("Hoverbox", function() {
   */
 
   Hoverbox.prototype.remove_ = function(e){
-    this.hoverbox.parentElement.removeChild(this.node);
+    this.hoverbox.parentElement.removeChild(this.hoverbox);
   };
 
 
