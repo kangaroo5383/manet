@@ -1,4 +1,4 @@
-angular.module("util").
+angular.module("util", []).
 factory("selection", function() {
 
 	return {
@@ -45,7 +45,7 @@ factory("selection", function() {
 			return null;
 		}
 	};
-	
+
 });
 
 // Alogorithm notes

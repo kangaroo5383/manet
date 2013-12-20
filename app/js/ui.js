@@ -1,5 +1,5 @@
 angular.module("app", ["hoverbox"]).
-factory("ui", function(Hoverbox) {
+run(function(Hoverbox) {
   var uiContainer, currentHoverbox;
 
 
