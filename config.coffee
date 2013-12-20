@@ -15,6 +15,12 @@ exports.config =
       order:
         before: [
           # All vendor components should be built first in the order they are used.
+          'bower_components/angular/angular.js'
+          'vendor/angular-sanitize.js'
+          # All vendor components should be built first in the order they are used.
+        ]
+        after: [
+          'app/js/manet.js'
         ]
 
     stylesheets:
