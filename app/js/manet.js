@@ -4,134 +4,124 @@ directive("hoverboxManager", function(selection, Hoverbox, host) {
 
 		controller: function($scope, $element) {
 
-			var model = {
-				selections: []
-			};
+			// var matches = function(el, selector) {
+			// 	if (!el || el.nodeType !== Node.ELEMENT_NODE) {
+			// 		return false;
+			// 	}
 
-			var uiContainer, currentHoverbox;
+			// 	var matchesSelector = el.webkitMatchesSelector || el.mozMatchesSelector ||
+			// 		el.oMatchesSelector || el.matchesSelector;
 
-
-			var matches = function(el, selector) {
-				if (!el || el.nodeType !== Node.ELEMENT_NODE) {
-					return false;
-				}
-
-				var matchesSelector = el.webkitMatchesSelector || el.mozMatchesSelector ||
-					el.oMatchesSelector || el.matchesSelector;
-
-				return matchesSelector.call(el, selector);
-			};
+			// 	return matchesSelector.call(el, selector);
+			// };
 
 
-			var targetIsValid = function(target) {
-				if (target.tagName === "BODY") {
-					return false;
-				}
+			// var targetIsValid = function(target) {
+			// 	if (target.tagName === "BODY") {
+			// 		return false;
+			// 	}
 
-				if (matches(target, ".manet-container *")) {
-					return false;
-				}
+			// 	if (matches(target, ".manet-container *")) {
+			// 		return false;
+			// 	}
 
-				var currentContainer = uiContainer.querySelector(".current");
-				var hoverboxes = currentContainer.querySelectorAll(".hoverbox");
+			// 	var currentContainer = uiContainer.querySelector(".current");
+			// 	var hoverboxes = currentContainer.querySelectorAll(".hoverbox");
 
-				for (var i = hoverboxes.length - 1; i >= 0; i--) {
-					var hoverboxEl = hoverboxes[i];
-					if (hoverboxEl.node == target) {
-						return false;
-					}
-				}
+			// 	for (var i = hoverboxes.length - 1; i >= 0; i--) {
+			// 		var hoverboxEl = hoverboxes[i];
+			// 		if (hoverboxEl.node == target) {
+			// 			return false;
+			// 		}
+			// 	}
 
-				return true;
-			};
-
-
-			var drawHoverbox = function(e) {
-				var target = e.target;
-				if (targetIsValid(target)) {
-					currentHoverbox.hoverbox.style.display = "";
-					currentHoverbox.setNode(target);
-				}
-			};
+			// 	return true;
+			// };
 
 
-			var removeHoverbox = function(e) {
-				currentHoverbox.hoverbox.style.display = "none";
-			};
+			// var drawHoverbox = function(e) {
+			// 	var target = e.target;
+			// 	if (targetIsValid(target)) {
+			// 		currentHoverbox.hoverbox.style.display = "";
+			// 		currentHoverbox.setNode(target);
+			// 	}
+			// };
 
 
-			var addHoverboxesForNodeMatches = function(node) {
-				var matches;
-				model.selections.push(node);
-				// Just a test to see if this works
-				if (model.selections.length > 1) {
-					matches = document.querySelectorAll(
-						selection.selectorArrayToString(selection.findMatchingSelectorForNodes(model.selections))
-					);
-					Array.prototype.forEach.call(matches, function(match) {
-						var hoverbox = new Hoverbox(match);
-						hoverbox.hoverbox.style.outline = "2px dotted grey";
-						hoverbox.hoverbox.style.background = "rgba(22,22,22,0.2)";
-						uiContainer.querySelector(".current").appendChild(hoverbox.hoverbox);
-					});
-				} else {
-					matches = document.querySelector(
-						selection.selectorArrayToString(selection.generateSelectorArrayForNode(node))
-					);
-				}
-			};
+			// var removeHoverbox = function(e) {
+			// 	currentHoverbox.hoverbox.style.display = "none";
+			// };
 
 
-			var addCurrentHoverbox = function(e) {
-				var target = e.target;
-				// console.log(target)
-				if (targetIsValid(target)) {
-					e.preventDefault();
-					addHoverboxesForNodeMatches(target);
-					var hoverbox = new Hoverbox(target);
-					uiContainer.querySelector(".current").appendChild(hoverbox.hoverbox);
-				}
-			};
+			// var addHoverboxesForNodeMatches = function(node) {
+			// 	var matches;
+			// 	model.selections.push(node);
+			// 	// Just a test to see if this works
+			// 	if (model.selections.length > 1) {
+			// 		matches = document.querySelectorAll(
+			// 			selection.selectorArrayToString(selection.findMatchingSelectorForNodes(model.selections))
+			// 		);
+			// 		Array.prototype.forEach.call(matches, function(match) {
+			// 			var hoverbox = new Hoverbox(match);
+			// 			hoverbox.hoverbox.style.outline = "2px dotted grey";
+			// 			hoverbox.hoverbox.style.background = "rgba(22,22,22,0.2)";
+			// 			uiContainer.querySelector(".current").appendChild(hoverbox.hoverbox);
+			// 		});
+			// 	} else {
+			// 		matches = document.querySelector(
+			// 			selection.selectorArrayToString(selection.generateSelectorArrayForNode(node))
+			// 		);
+			// 	}
+			// };
 
 
-			var attachListeners = function() {
-				document.addEventListener("mouseover", drawHoverbox);
-				document.addEventListener("mouseout", removeHoverbox);
-				document.addEventListener("click", addCurrentHoverbox);
-			};
+			// var addCurrentHoverbox = function(e) {
+			// 	var target = e.target;
+			// 	// console.log(target)
+			// 	if (targetIsValid(target)) {
+			// 		e.preventDefault();
+			// 		addHoverboxesForNodeMatches(target);
+			// 		var hoverbox = new Hoverbox(target);
+			// 		uiContainer.querySelector(".current").appendChild(hoverbox.hoverbox);
+			// 	}
+			// };
+
+
+			// var attachListeners = function() {
+			// 	document.addEventListener("mouseover", drawHoverbox);
+			// 	document.addEventListener("mouseout", removeHoverbox);
+			// 	document.addEventListener("click", addCurrentHoverbox);
+			// };
 
 
 
-			uiContainer = createContainer();
-			attachListeners();
-
+			// uiContainer = createContainer();
+			// attachListeners();
 
 			$scope.$watch("activeField", function(newField) {
+        console.log("activeField watch: ", newField);
 				if (newField) {
 
 				}
 			});
 
-			var debugHB = $scope;
-
 		}
-	}
+	};
 }).run(function() {
 	var containerHtml = '<div class="potential"></div><div class="current"></div>';
+	var container = document.createElement("div");
+  container.classList.add("manet-container");
+  container.innerHTML = containerHtml;
 
-	var createContainer = function() {
-		var container = document.createElement("div");
-		var sidebar = document.createElement("div");
-		container.classList.add("manet-container");
-		container.innerHTML = containerHtml;
-		sidebar.setAttribute("sidebar", "");
-		container.appendChild(sidebar);
-		document.body.appendChild(container);
+  var sidebar = document.createElement("div");
+	sidebar.setAttribute("sidebar", "");
+	container.appendChild(sidebar);
 
-		currentHoverbox = new Hoverbox(document.body);
-		container.querySelector(".potential").appendChild(currentHoverbox.hoverbox);
+  var hoverboxManager = document.createElement("div");
+  hoverboxManager.setAttribute("hoverboxManager", "");
+  container.appendChild(hoverboxManager);
 
-		return container;
-	};
+
+	document.body.appendChild(container);
 })
 angular.bootstrap(document.body, ["app"]);
