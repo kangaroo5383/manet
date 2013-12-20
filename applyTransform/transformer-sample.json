@@ -1,4 +1,4 @@
 {
-	"key1" : "div div #something",
-	"reviews" : ".reviews"
+	"characters" : ".characters",
+	"rating" : "#all-critics-meter"
 }
