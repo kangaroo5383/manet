@@ -26,6 +26,7 @@ factory("Hoverbox", function() {
   Hoverbox.prototype.setupEl_ = function(){
     this.hoverbox = document.createElement("div");
     this.hoverbox.classList.add("hoverbox");
+    this.hoverbox.hoverbox = this;
   };
 
 
