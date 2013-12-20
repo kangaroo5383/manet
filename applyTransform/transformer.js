@@ -4,9 +4,10 @@ var restify = require('restify');
 var jsdom = require('jsdom').jsdom;
 var $ = require('jquery');
 
-var jq = require('jquery').create();
 var myWindow = jsdom().createWindow();
 var jQuery = require('jquery').create(myWindow);
+
+var format = require('util').format;
 
 var valueForSelectorString = function (selectorString) {
   var output = [];
@@ -16,14 +17,15 @@ var valueForSelectorString = function (selectorString) {
   return output;
 };
 
-var processContentAtURLWithTransformerFileURL = function (aURL, transformerFile) {
+var processContentAtURLWithTransformerFileURL = function (aURL, transformerFile, callback) {
   var content = "";
+  var err = null;
   var transformerFileContent = fs.readFileSync(transformerFile);
   var transformerDictionary = JSON.parse(transformerFileContent);
 
   http.get(aURL, function(response) {
     if (response.statusCode != 200) {
-      console.log("file not accessible via http");
+      callback({message:"file not accessible via http"}, null);
     }
     response.setEncoding('utf8');
     response.on("data", function(chunk){
@@ -41,21 +43,23 @@ var processContentAtURLWithTransformerFileURL = function (aURL, transformerFile)
         dictionary[aKey] = valueForSelectorString(transformerDictionary[aKey]);
       }
 
-      console.log(JSON.stringify(dictionary));
-
-      //clear the window because it causes error
+      callback(null, dictionary);
       myWindow.document.innerHTML = "";
     });
   }).on('error', function(e) {
     console.log("Got error: " + e.message);
+    callback(e, null);
   });  
 }
 
-function transformer() {
+function transformer() {}
 
-}
-transformer.transformURLWithTransformerFile = function (aURL, transformerFile) {
-  processContentAtURLWithTransformerFileURL(aURL, transformerFile);  
+transformer.transformURLWithTransformerFile = function (aURL, transformerFile, callback) {
+  if (aURL && aURL !== "" && transformerFile && transformerFile !== "") {
+    processContentAtURLWithTransformerFileURL(aURL, transformerFile, callback);
+  } else {
+    console.log("missing parameter in transformURLWithTransformerFile");
+  }
 }
 
 module.exports = transformer;
