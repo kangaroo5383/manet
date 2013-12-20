@@ -6,7 +6,7 @@ var http = require("http"),
 
 http.createServer(function(request, response) {
 
-  var uri = url.parse(request.url).pathname,
+  var uri = url.parse("_public" + request.url).pathname,
     filename = path.join(process.cwd(), uri);
 
   path.exists(filename, function(exists) {
