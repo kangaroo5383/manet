@@ -1,4 +1,4 @@
-angular.module("util", []).
+angular.module("util").
 factory("selection", function() {
 
 	return {
@@ -45,17 +45,15 @@ factory("selection", function() {
 			return null;
 		}
 	};
-
+	
 });
 
 // Alogorithm notes
-// html body *:nth-child(4) *:nth-child(1) *:nth-child(3) 
+// html body *:nth-child(1) *:nth-child(1) *:nth-child(1) *:nth-child(1) *:nth-child(1) //.blahBorder
 
-// html body section.black.right span.large
+// html body *:nth-child(1) *:nth-child(1) *:nth-child(2) *:nth-child(2) *:nth-child(1) //.blahBorder
 
-// html body *:nth-child(1) *:nth-child(1) *:nth-child(2) *:nth-child(2) *:nth-child(1)
-
-// html body *:nth-child(1) *:nth-child(1) *:nth-child(4) *:nth-child(3) *:nth-child(1)
+// html body *:nth-child(1) *:nth-child(1) *:nth-child(4) *:nth-child(3) *:nth-child(1) //.blahBorder
 
 
 // html body div table:nth-child(1) tdbody tr:nth-child(1) td:nth-child(1) div:nth-child(1) h1:nth-child(1)
