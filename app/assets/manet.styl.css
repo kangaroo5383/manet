@@ -104,11 +104,12 @@
 
 
 .manet-container [sidebar] .input-wrapper {
-  display: inline-block;
+  display: flex;
 }
 
 
 .manet-container [sidebar] .input-wrapper input{
+  margin-right: 5px;
   padding: 4px;
   font-size: 14px;
 
@@ -124,4 +125,14 @@
   cursor: pointer;
   background: none;
   color: rgb(80,80,80);
+}
+.manet-container [sidebar] .input-wrapper span {
+  align-self: center;
+  height: 12px;
+  padding: 0px 4px 2px;
+  font-size: 10px;
+  font-family:Helvetica-light;
+  background: #fd4741;
+  color:#f0f0f0;
+  border-radius: 25px;
 }

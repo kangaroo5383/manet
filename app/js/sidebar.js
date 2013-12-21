@@ -2,16 +2,16 @@ angular.module("ui").
 directive("sidebar", function(host) {
 
 	return {
-		template: "<div ng-repeat='field in fields'><div class='input-wrapper' ng-click='setActiveField(field);'><input field ng-disabled='!field.appearance.active;' ng-model='field..matches.key' /><span>{{field.appearance.fieldMatchesNodeLength}}</span></div><button class='remove' ng-click='removeField(field)'>×</button></div><button ng-click='addField()'>+</button>",
+		template: "<div ng-repeat='field in fields'><div class='input-wrapper' ng-click='setActiveField(field);'><input placeholder='Untitled' field ng-disabled='!field.appearance.active;' ng-model='field.matches.key' /><span ng-show='field.appearance.fieldMatchesNodeLength'>{{field.appearance.fieldMatchesNodeLength}}</span><button class='remove' ng-click='removeField(field)'>×</button></div></div><button ng-click='addField()'>+</button>",
 		controller: function($scope, $element) {
 
 			$scope.setActiveField = function(activeField) {
 				$scope.fields.forEach(function(field) {
-					if (field.active) {
-						field.active = false;
+					if (field.appearance.active) {
+						field.appearance.active = false;
 					}
 				});
-				activeField.active = true;
+				activeField.appearance.active = true;
 				$scope.activeField = activeField;
 			};
 
@@ -48,7 +48,7 @@ directive("field", function($timeout) {
 
 	return {
 		controller: function($scope, $element) {
-			$scope.$watch("field.active", function(isActive) {
+			$scope.$watch("field.appearance.active", function(isActive) {
 				if (isActive) {
 					$timeout(function() {
 						$element[0].focus();
