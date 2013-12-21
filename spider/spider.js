@@ -1,11 +1,5 @@
 // var dataCollector = (domainUrl, filterUrlRegex, transformJson);
 
-
-var transformFile = {
-	"characters" : ".characters",
-	"rating" : "#all-critics-meter"
-};
-
 var transformer = require('../applyTransform/transformer.js');
 
 var domainToCrawl, topLevelDomainToCrawl;
@@ -37,6 +31,23 @@ function getTopLevelDomain(url){
 
 function spider () {};
 
+var transform = function (content, transformerDictionary) {
+		transformer.transformContentWithTransformerDictionary(content, {
+		characters : ".characters",
+		rating : "#all-critics-meter"
+	}, function(err, resultDictionary) {
+		if (err) {
+			console.log("some error:" + err.message);
+		} else {
+			if (resultDictionary && resultDictionary !== null) {
+				console.log("HI");
+				console.log(JSON.stringify(resultDictionary));		
+			} else {
+				console.log("no data");
+			}
+		}
+	});
+}
 // Call this with e.g. domainToCrawl = 'http://rottentomatoes.com';
 spider.run = function(domainToCrawl){
 
@@ -45,13 +56,15 @@ spider.run = function(domainToCrawl){
 	var db = mongo.db('localhost:27017/manet');
 	
 	var Crawler = require("crawler").Crawler;
-
 	
 	var c = new Crawler({
 		"maxConnections":10,
-	
 		// This will be called for each crawled page
 		"callback":function(error,result,$) {
+
+			console.log("queued: " + result.uri);
+			transform(result.body, {});
+
 			$('a').each(function(index){
 				// We don't want to follow links that are not on the same top level domain
 				// or ones that have things like javascript(0) in their href, so we
@@ -77,20 +90,6 @@ spider.run = function(domainToCrawl){
 									console.log(href + " was registered ");
 									console.log("Applying transformation doc");
 									
-									transformer.transformURLWithTransformerDictionary(href, {
-										characters : ".characters",
-										rating : "#all-critics-meter"
-									}, function(err, resultDictionary) {
-										if (err) {
-											console.log("some error:" + err.message);
-										} else {
-											if (resultDictionary) {
-												console.log(JSON.stringify(resultDictionary));		
-											} else {
-												console.log("no data");
-											}
-										}
-									});
 								}
 								
 							});
