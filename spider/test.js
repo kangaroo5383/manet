@@ -5,11 +5,15 @@ var response = {
 	url: "http://www.rottentomatoes.com/",
 	transformer: [{
 		key: "comments",
-		selector: "html > *:nth-child(2) > *:nth-child(14) > *:nth-child(2) > *:nth-child(1) > *:nth-child(1) > *:nth-child(10) > *:nth-child(2) > *:nth-child(2) P"
+		selector: "html DIV.body_main DIV.col#mainColumn DIV#mobPanel DIV.content DIV.content_box#contentReviews DIV.content_body DIV#reviews DIV.quote_bubble DIV.review_quote DIV.quote_contents DIV.media_block_content"
 	},
 	{
-		key: "comments2",
-		selector: "html > *:nth-child(2) > *:nth-child(14) > *:nth-child(2) > *:nth-child(1) > *:nth-child(1) > *:nth-child(10) > *:nth-child(2) > *:nth-child(2) P"
+		key: "characters",
+		selector: "html DIV.body_main DIV.col#mainColumn DIV#mobPanel DIV.content DIV.clearfix DIV.col_p DIV.content_box#cast-info DIV.content_body DIV.moreContainer DIV.more-list UL.clearfix LI.media_block DIV.media_block_content SPAN.characters"
+	},
+	{
+		key: "title",
+		selector: "html DIV.body_main DIV.col#mainColumn DIV#mobPanel DIV.content DIV.content_box DIV.content_body DIV.media_block_content H1.movie_title"
 	}]};
 
 var processInput = function (inputDictionary) {
@@ -18,7 +22,6 @@ var processInput = function (inputDictionary) {
 	for (var aKey in transformer) {
 		result[transformer[aKey]["key"]] = transformer[aKey]["selector"];
 	}
-	console.log(result);
 	return result;
 };
 

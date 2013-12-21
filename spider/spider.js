@@ -8,12 +8,14 @@ var phantom = require('node-phantom');
 
 var domainToCrawl, topLevelDomainToCrawl;
 
+var mongo = require('mongoskin');
+var db = mongo.db('localhost:27017/manet');
 
 function spider () {};
 
 var transform = function (aURL, content, transformerDictionary) {
 	console.log("transforming");
-	transformer.transformURLWithTransformerDictionary(aURL, transformerDictionary, function(err, resultDictionary) {
+	transformer.transformContentWithTransformerDictionary(content, transformerDictionary, function(err, resultDictionary) {
 		console.log("handled" + aURL);
 		if (err) {
 			console.log("transform error:" + err.message);
@@ -36,8 +38,6 @@ var shouldQueue = function (currentDomain, aURL) {
 spider.run = function(baseURL, transformerDictionary){
 	var crawlCount = 1;
 	var currentDomain = url.parse(baseURL).hostname;
-	var mongo = require('mongoskin');
-	var db = mongo.db('localhost:27017/manet');
 	
 	
 	var c = new Crawler({
@@ -52,11 +52,7 @@ spider.run = function(baseURL, transformerDictionary){
 			currentURI = currentURI.replace("http://", "http://www.");
 			console.log(currentURI + " was registered ");
 			console.log("Applying transformation doc");
-			// transform(currentURI, result.body, transformerDictionary);
-			transformer.test(currentURI, transformerDictionary, function (err, dictionary){
-				console.log("returned");
-				console.log(dictionary);
-			});
+			transform(currentURI, result.body, transformerDictionary);
 				
 			$('a').each(function(index, el){
 				var href = $(el).prop('href');				
