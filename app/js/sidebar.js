@@ -2,11 +2,8 @@ angular.module("ui").
 directive("sidebar", function(host) {
 
 	return {
-		template: "<div ng-repeat='field in fields'><button ng-click='removeField(field)'>×</button><div ng-click='setActiveField(field);'><input field ng-disabled='!field.active;' ng-model='field.title' /></div></div><button ng-click='addField()'>+</button>",
+		template: "<div ng-repeat='field in fields'><button ng-click='removeField(field)'>×</button><div ng-click='setActiveField(field);'><input field ng-disabled='!field.active;' ng-model='field.key' /></div></div><button ng-click='addField()'>+</button>",
 		controller: function($scope, $element) {
-
-			$scope.fields = [];
-			$scope.activeField;
 
 			$scope.setActiveField = function(activeField) {
 				$scope.fields.forEach(function(field) {
@@ -20,7 +17,7 @@ directive("sidebar", function(host) {
 
 			$scope.addField = function() {
 				var fieldModel = {
-					title: "",
+					key: "",
 					selector: null,
 					active: null
 				};

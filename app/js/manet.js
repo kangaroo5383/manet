@@ -147,7 +147,7 @@ directive("hoverboxmanager", function(selection, Hoverbox, host) {
 	};
 }).run(function() {
 	var container = document.createElement("div");
-  // container.setAttribute("ng-controller", "connection");
+  container.setAttribute("ng-controller", "connection");
   container.classList.add("manet-container");
 
   var sidebar = document.createElement("div");
