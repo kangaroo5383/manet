@@ -136,6 +136,8 @@ directive("hoverboxmanager", function(selection, Hoverbox, host) {
         potentialHoverbox = new Hoverbox(document.body);
         var potentialContainer = container.querySelector(".potential");
         potentialContainer.appendChild(potentialHoverbox.hoverbox);
+
+        removeHoverbox();
       };
 
       setupContainer();
