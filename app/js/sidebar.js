@@ -2,7 +2,7 @@ angular.module("ui").
 directive("sidebar", function(host) {
 
 	return {
-		template: "<div ng-repeat='field in fields'><div class='input-wrapper' ng-click='setActiveField(field);'><input field ng-disabled='!field.active;' ng-model='field.title' /></div><button class='remove' ng-click='removeField(field)'>×</button></div><button ng-click='addField()'>+</button>",
+		template: "<div ng-repeat='field in fields'><div class='input-wrapper' ng-click='setActiveField(field);'><input field ng-disabled='!field.active;' ng-model='field.key' /><span>{{field.appearance.fieldMatchesNodeLength}}</span></div><button class='remove' ng-click='removeField(field)'>×</button></div><button ng-click='addField()'>+</button>",
 		controller: function($scope, $element) {
 
 			$scope.setActiveField = function(activeField) {
@@ -17,9 +17,14 @@ directive("sidebar", function(host) {
 
 			$scope.addField = function() {
 				var fieldModel = {
-					key: "Untitled",
-					selector: null,
-					active: null
+					matches: {
+						key: "",
+						selector: null
+					},
+					appearance: {
+						active: null,
+						fieldMatchesNodeLength: null
+					}
 				};
 				$scope.fields.push(fieldModel);
 				$scope.setActiveField(fieldModel);
@@ -28,9 +33,12 @@ directive("sidebar", function(host) {
 			$scope.removeField = function(field) {
 				var fieldIndex = $scope.fields.indexOf(field);
 				$scope.fields.splice(fieldIndex, 1);
+				if (fieldIndex === 0) {
+					$scope.activeField = false;
+				}
 			};
 
-			debug = $scope.fields
+			debug = $scope
 
 		}
 	};

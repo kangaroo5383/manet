@@ -4,7 +4,7 @@ directive("hoverboxmanager", function(selection, Hoverbox, host) {
 
 		controller: function($scope, $element) {
 
-      var container, potentialHoverbox;
+			var container, potentialHoverbox;
 
 			var matches = function(el, selector) {
 				if (!el || el.nodeType !== Node.ELEMENT_NODE) {
@@ -18,39 +18,39 @@ directive("hoverboxmanager", function(selection, Hoverbox, host) {
 			};
 
 
-      var getCurrentSelectedNodes = function(){
-        var currentSelectedNodes = [];
-        var currentContainer = container.querySelector(".current");
-        var hoverboxEls = currentContainer.querySelectorAll(".hoverbox");
+			var getCurrentSelectedNodes = function() {
+				var currentSelectedNodes = [];
+				var currentContainer = container.querySelector(".current");
+				var hoverboxEls = currentContainer.querySelectorAll(".hoverbox");
 
-        Array.prototype.forEach.call(hoverboxEls, function(hoverboxEl){
-          var hoverbox = hoverboxEl.hoverbox;
-          currentSelectedNodes.push(hoverbox.node);
-        });
+				Array.prototype.forEach.call(hoverboxEls, function(hoverboxEl) {
+					var hoverbox = hoverboxEl.hoverbox;
+					currentSelectedNodes.push(hoverbox.node);
+				});
 
-        return currentSelectedNodes;
-      };
-
-
-      var setSelectedNodes = function(selector){
-        var currentContainer = container.querySelector(".current");
-        currentContainer.innerHTML = "";
-
-        if(selector){
-         var matches = document.querySelectorAll(selector);
-          Array.prototype.forEach.call(matches, function(match) {
-            var hoverbox = new Hoverbox(match);
-            currentContainer.appendChild(hoverbox.hoverbox);
-          });
-        }
-      };
+				return currentSelectedNodes;
+			};
 
 
-      var addSelectedNode = function(node){
-        var currentContainer = container.querySelector(".current");
-        var hoverbox = new Hoverbox(node);
-        currentContainer.appendChild(hoverbox.hoverbox);
-      };
+			var setSelectedNodes = function(selector) {
+				var currentContainer = container.querySelector(".current");
+				currentContainer.innerHTML = "";
+
+				if (selector) {
+					var matches = document.querySelectorAll(selector);
+					Array.prototype.forEach.call(matches, function(match) {
+						var hoverbox = new Hoverbox(match);
+						currentContainer.appendChild(hoverbox.hoverbox);
+					});
+				}
+			};
+
+
+			var addSelectedNode = function(node) {
+				var currentContainer = container.querySelector(".current");
+				var hoverbox = new Hoverbox(node);
+				currentContainer.appendChild(hoverbox.hoverbox);
+			};
 
 
 			var targetIsValid = function(target) {
@@ -92,77 +92,88 @@ directive("hoverboxmanager", function(selection, Hoverbox, host) {
 
 			var addHoverboxesForNodeMatches = function() {
 				var matches, matchingSelector;
-        var currentSelectedNodes = getCurrentSelectedNodes();
+				var currentSelectedNodes = getCurrentSelectedNodes();
 
 				if (currentSelectedNodes.length > 1) {
-          matchingSelector = selection.findMatchingSelectorForNodes(currentSelectedNodes);
+					matchingSelector = selection.findMatchingSelectorForNodes(currentSelectedNodes);
 				} else {
-          matchingSelector = selection.generateSelectorArrayForNode(currentSelectedNodes[0]);
+					matchingSelector = selection.generateSelectorArrayForNode(currentSelectedNodes[0]);
 				}
 
-        var selector = selection.selectorArrayToString(matchingSelector);
+				var selector = selection.selectorArrayToString(matchingSelector);
 
-        if($scope.activeField){
-          $scope.activeField.selector = selector;
-          setSelectedNodes(selector);
-        }
+				if ($scope.activeField) {
+					$scope.activeField.appearance.fieldMatchesNodeLength = document.querySelectorAll(selector).length;
+					$scope.activeField.matches.selector = selector;
+					setSelectedNodes(selector);
+				}
 
 			};
 
 
 			var addCurrentHoverbox = function(e) {
-				var target = e.target;
+				$scope.$apply(function() {
+					var target = e.target;
 
-				if (targetIsValid(target)) {
-					e.preventDefault();
-          addSelectedNode(target);
-					addHoverboxesForNodeMatches(target);
-				}
+					if (targetIsValid(target)) {
+						e.preventDefault();
+						addSelectedNode(target);
+						addHoverboxesForNodeMatches(target);
+					}
+				});
 			};
 
 
-      var attachListeners = function() {
-        document.addEventListener("mouseover", drawHoverbox);
-        document.addEventListener("mouseout", removeHoverbox);
-        document.addEventListener("click", addCurrentHoverbox);
-      };
+			var attachListeners = function() {
+				document.addEventListener("mouseover", drawHoverbox);
+				document.addEventListener("mouseout", removeHoverbox);
+				document.addEventListener("click", addCurrentHoverbox);
+			};
 
 
-      var setupContainer = function(){
-        container = $element[0];
-        var containerHtml = '<div class="potential"></div><div class="current"></div>';
-        container.innerHTML = containerHtml;
+			var setupContainer = function() {
+				container = $element[0];
+				var containerHtml = '<div class="potential"></div><div class="current"></div>';
+				container.innerHTML = containerHtml;
 
+<<<<<<< Updated upstream
         potentialHoverbox = new Hoverbox(document.body);
         var potentialContainer = container.querySelector(".potential");
         potentialContainer.appendChild(potentialHoverbox.hoverbox);
 
         removeHoverbox();
       };
+=======
+				potentialHoverbox = new Hoverbox(document.body);
+				var potentialContainer = container.querySelector(".potential");
+				potentialContainer.appendChild(potentialHoverbox.hoverbox);
+			};
+>>>>>>> Stashed changes
 
-      setupContainer();
-      attachListeners();
+			setupContainer();
+			attachListeners();
 
+			$scope.$watch("activeField", function(newField) {
+				if (newField) {
+					setSelectedNodes(newField.matches.selector);
 
-      $scope.$watch("activeField", function(newField) {
-        if (newField) {
-          setSelectedNodes(newField.selector);
-        }
-      });
+				}
+			});
 		}
 	};
 }).run(function() {
 	var container = document.createElement("div");
-  container.setAttribute("ng-controller", "connection");
-  container.classList.add("manet-container");
+	container.setAttribute("ng-controller", "connection");
+	container.classList.add("manet-container");
 
-  var sidebar = document.createElement("div");
+	var sidebar = document.createElement("div");
 	sidebar.setAttribute("sidebar", "");
 	container.appendChild(sidebar);
 
-  var hoverboxmanager = document.createElement("div");
-  hoverboxmanager.setAttribute("hoverboxmanager", "");
-  container.appendChild(hoverboxmanager);
+	var hoverboxmanager = document.createElement("div");
+	hoverboxmanager.setAttribute("hoverboxmanager", "");
+	hoverboxmanager.setAttribute("ng-show", "activeField");
+	container.appendChild(hoverboxmanager);
 
 	document.body.appendChild(container);
 });
