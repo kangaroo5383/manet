@@ -36,11 +36,13 @@ directive("hoverboxmanager", function(selection, Hoverbox, host) {
         var currentContainer = container.querySelector(".current");
         currentContainer.innerHTML = "";
 
-        var matches = document.querySelectorAll(selection.selectorArrayToString(selector));
-        Array.prototype.forEach.call(matches, function(match) {
-          var hoverbox = new Hoverbox(match);
-          currentContainer.appendChild(hoverbox.hoverbox);
-        });
+        if(selector){
+         var matches = document.querySelectorAll(selector);
+          Array.prototype.forEach.call(matches, function(match) {
+            var hoverbox = new Hoverbox(match);
+            currentContainer.appendChild(hoverbox.hoverbox);
+          });
+        }
       };
 
 
@@ -98,8 +100,11 @@ directive("hoverboxmanager", function(selection, Hoverbox, host) {
           matchingSelector = selection.generateSelectorArrayForNode(currentSelectedNodes[0]);
 				}
 
+        var selector = selection.selectorArrayToString(matchingSelector);
+
         if($scope.activeField){
-          $scope.activeField.selector = matchingSelector;
+          $scope.activeField.selector = selector;
+          setSelectedNodes(selector);
         }
 
 			};
@@ -138,8 +143,7 @@ directive("hoverboxmanager", function(selection, Hoverbox, host) {
 
 
       $scope.$watch("activeField", function(newField) {
-        // console.log("activeField: ", newField);
-        if (newField && newField.selector) {
+        if (newField) {
           setSelectedNodes(newField.selector);
         }
       });
