@@ -136,19 +136,12 @@ directive("hoverboxmanager", function(selection, Hoverbox, host) {
 				var containerHtml = '<div class="potential"></div><div class="current"></div>';
 				container.innerHTML = containerHtml;
 
-<<<<<<< Updated upstream
-        potentialHoverbox = new Hoverbox(document.body);
-        var potentialContainer = container.querySelector(".potential");
-        potentialContainer.appendChild(potentialHoverbox.hoverbox);
-
-        removeHoverbox();
-      };
-=======
 				potentialHoverbox = new Hoverbox(document.body);
 				var potentialContainer = container.querySelector(".potential");
 				potentialContainer.appendChild(potentialHoverbox.hoverbox);
+
+				removeHoverbox();
 			};
->>>>>>> Stashed changes
 
 			setupContainer();
 			attachListeners();
