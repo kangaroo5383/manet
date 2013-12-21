@@ -12,6 +12,8 @@
     "restify": "*",
     "jsdom": "*",
     "jquery": "*",
-    "mongodb": "*"
+    "mongodb": "*",
+    "node-phantom": "*",
+    "phantom": "*"
   }
 }
