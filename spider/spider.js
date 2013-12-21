@@ -62,10 +62,9 @@ spider.run = function(domainToCrawl){
 				
 				var topLevelDomain = getTopLevelDomain(href); 
 				
-				
+			
 				if(topLevelDomain == topLevelDomainToCrawl){
 	
-					
 					db.collection('urls').findById(href, function(err, result){
 						console.log(result);
 						if(result == null){
@@ -78,13 +77,18 @@ spider.run = function(domainToCrawl){
 									console.log(href + " was registered ");
 									console.log("Applying transformation doc");
 									
-									if(href.match());
-									
-									transformer.transformURLWithTransformer(aURL, transformer, function(err, resultDictionary) {
+									transformer.transformURLWithTransformerDictionary(href, {
+										characters : ".characters",
+										rating : "#all-critics-meter"
+									}, function(err, resultDictionary) {
 										if (err) {
-											console.log(err.message);
+											console.log("some error:" + err.message);
 										} else {
-											console.log(JSON.stringify(resultDictionary));	
+											if (resultDictionary) {
+												console.log(JSON.stringify(resultDictionary));		
+											} else {
+												console.log("no data");
+											}
 										}
 									});
 								}
