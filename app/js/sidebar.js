@@ -2,7 +2,7 @@ angular.module("ui").
 directive("sidebar", function(host) {
 
 	return {
-		template: "<div ng-repeat='field in fields'><button ng-click='removeField(field)'>×</button><div ng-click='setActiveField(field);'><input field ng-disabled='!field.active;' ng-model='field.key' /></div></div><button ng-click='addField()'>+</button>",
+		template: "<div ng-repeat='field in fields'><div class='input-wrapper' ng-click='setActiveField(field);'><input field ng-disabled='!field.active;' ng-model='field.title' /></div><button class='remove' ng-click='removeField(field)'>×</button></div><button ng-click='addField()'>+</button>",
 		controller: function($scope, $element) {
 
 			$scope.setActiveField = function(activeField) {
@@ -17,7 +17,7 @@ directive("sidebar", function(host) {
 
 			$scope.addField = function() {
 				var fieldModel = {
-					key: "",
+					key: "Untitled",
 					selector: null,
 					active: null
 				};
