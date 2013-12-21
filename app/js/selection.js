@@ -7,9 +7,19 @@ factory("selection", function() {
 			var parent = node && node.parentElement;
 
 			if (parent) {
-				var nodeIndexInParent = Array.prototype.indexOf.call(parent.children, node);
-				selectorArray.unshift(":nth-child(" + (nodeIndexInParent + 1) + ") ");
-				selectorArray.unshift("> *");
+				// var nodeIndexInParent = Array.prototype.indexOf.call(parent.children, node);
+				// selectorArray.unshift(":nth-child(" + (nodeIndexInParent + 1) + ") ");
+				// selectorArray.unshift("> *");
+				var className = node.className !== "" ? "."+node.className: "";
+				if (className!= "") {
+					var classnames = className.split(" ");
+					className = classnames[0];
+				}
+				var id = node.id !== "" ? "#" + node.id : "";
+				if(!(className === "" && id === "") && node.tagName !== "BODY") {
+					selectorArray.unshift(node.tagName+className+id + " ");
+				}
+
 
 				return this.generateSelectorArrayForNode(parent, selectorArray);
 			}
