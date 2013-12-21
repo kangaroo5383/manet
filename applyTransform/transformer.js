@@ -16,6 +16,25 @@ var valueForSelectorString = function (selectorString) {
   });
   return output;
 };
+var transformContentWithTransformerDictionary = function (content, transformerDictionary, callback) {
+  var dictionary = {};
+  var valid = false;
+  var transformerKeys = Object.keys(transformerDictionary);
+  for (var i in transformerKeys) {
+    var aKey = transformerKeys[i];
+    var selectedValue = valueForSelectorString(transformerDictionary[aKey]);
+    if (selectedValue.length > 0) {
+      valid = true;
+      dictionary[aKey] = selectedValue;
+    }
+  }
+  if (Object.keys(dictionary).length === 0) {
+    dictionary = null;
+  }
+
+  callback(null, dictionary);
+  myWindow.document.innerHTML = "";
+};
 
 var processContentAtURLWithTransformerFileURL = function (aURL, transformerDictionary, callback) {
   var content = "";
@@ -33,23 +52,7 @@ var processContentAtURLWithTransformerFileURL = function (aURL, transformerDicti
       myWindow.document.innerHTML = content;
       content = "";
       
-      var dictionary = {};
-      var valid = false;
-      var transformerKeys = Object.keys(transformerDictionary);
-      for (var i in transformerKeys) {
-        var aKey = transformerKeys[i];
-        var selectedValue = valueForSelectorString(transformerDictionary[aKey]);
-        if (selectedValue.length > 0) {
-          valid = true;
-          dictionary[aKey] = selectedValue;
-        }
-      }
-      if (Object.keys(dictionary).length === 0) {
-        dictionary = null;
-      }
-
-      callback(null, dictionary);
-      myWindow.document.innerHTML = "";
+      transformContentWithTransformerDictionary(content, transformerDictionary, callback);
     });
   }).on('error', function(e) {
     console.log("Got error: " + e.message);
@@ -75,6 +78,10 @@ transformer.transformURLWithTransformerDictionary = function (aURL, transformerD
   } else {
     console.log("missing parameter in transformURLWithTransformerFile");
   }
+};
+
+transformer.transformContentWithTransformerDictionary = function (content, transformerDictionary, callback) {
+  transformContentWithTransformerDictionary(content, transformerDictionary, callback);
 };
 module.exports = transformer;
 

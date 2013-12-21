@@ -1,6 +1,6 @@
 var transformer = require('./transformer.js');
 var aURL = "http://www.rottentomatoes.com/m/the_hunger_games_catching_fire/";
-// var aURL = "http://www.macrumors.com/";
+// var aURL = "http://rottentomatoes.com/m/anchorman_2_the_legend_continues/";
 
 var transformerFile = "/Users/jessicalam/Development/manet/applyTransform/transformer-sample.json";
 
